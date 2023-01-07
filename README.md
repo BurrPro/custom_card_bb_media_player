@@ -6,3 +6,8 @@
  *** Note: built for [UI-Lovelace-Minimalist](https://github.com/UI-Lovelace-Minimalist/UI)
 
 ![Screenshot](preview.png)
+
+
+Dependancies in current code include:
+[hass-fontawesome](https://github.com/thomasloven/hass-fontawesome)
+Card is built in a way that suits my Home Assistant install. If you wish to use this card you may have to adapt the source to work with your instance.
