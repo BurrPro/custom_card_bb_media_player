@@ -10,6 +10,6 @@
 
 Dependancies in current code include:
 
-[hass-fontawesome](https://github.com/thomasloven/hass-fontawesome)
+[hass-fontawesome](https://github.com/thomasloven/hass-fontawesome) for custom icons inside buttons (apple tv)
 
 Card is built in a way that suits my Home Assistant install. If you wish to use this card you may have to adapt the source to work with your instance.
