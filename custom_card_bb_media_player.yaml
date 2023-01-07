@@ -1,0 +1,170 @@
+---
+card_bb_media_player:
+  size: "20px"
+  show_icon: true
+  show_entity_picture: false
+  show_state: false
+  show_name: true
+  template:
+    - "icon_info"
+    - "blue_not_unavailable"
+    - "ulm_translation_engine"
+  label: "[[[ return variables.ulm_translation_state_unit ]]]"
+card_bb_media_player_with_controls:
+  variables:
+    ulm_card_bb_media_player_with_controls_name: "No name set"
+    ulm_card_bb_media_player_with_controls_source_entity: "No entity set"
+    ulm_card_bb_media_player_enable_collapse: true
+    ulm_card_bb_media_player_controls: true
+    ulm_card_bb_media_player_enable_background_color: true
+    ulm_card_bb_media_player_with_controls_source_sensor_entity: "No entity set"
+  triggers_update:
+    - "[[[ ulm_card_bb_media_player_with_controls_entity ]]]"
+  styles:
+    grid:
+      - grid-template-areas: "'item1' 'item2' 'item3'"
+      - grid-template-columns: "1fr"
+      - grid-template-rows: "min-content  min-content"
+      - row-gap: "12px"
+    card:
+      - border-radius: "var(--border-radius)"
+      - box-shadow: "var(--box-shadow)"
+      - padding: "12px"
+  custom_fields:
+    item1:
+      card:
+        type: "custom:button-card"
+        template:
+          - "card_bb_media_player"
+        tap_action:
+          action: "call-service"
+          service: "input_select.select_option"
+          service_data:
+            entity_id: "[[[ return variables.ulm_card_bb_media_player_with_controls_source_entity ]]]"
+            option: "Off"
+        entity: "[[[ return variables.ulm_card_bb_media_player_with_controls_entity ]]]"
+        name: "[[[ return variables.ulm_card_bb_media_player_with_controls_name ]]]"
+        styles:
+          card:
+            - box-shadow: "none"
+            - padding: "0px"
+    item2:
+      card:
+        type: "custom:button-card"
+        template: "list_items"
+        custom_fields:
+          item1:
+            card:
+              type: "custom:button-card"
+              template: "widget_icon"
+              tap_action:
+                action: "call-service"
+                service: "input_select.select_option"
+                service_data:
+                  entity_id: "[[[ return variables.ulm_card_bb_media_player_with_controls_source_entity ]]]"
+                  option: "PS3"
+              icon: "mdi:sony-playstation"
+          item2:
+            card:
+              type: "custom:button-card"
+              template: "widget_icon"
+              tap_action:
+                action: "call-service"
+                service: "input_select.select_option"
+                service_data:
+                  entity_id: "[[[ return variables.ulm_card_bb_media_player_with_controls_source_entity ]]]"
+                  option: "Music"
+              icon: "mdi:music"
+
+          item3:
+            card:
+              type: "custom:color-card"
+              entity: "media_player.home_hifi"
+              tap_action:
+                action: "call-service"
+                service: "input_select.select_option"
+                service_data:
+                  entity_id: "[[[ return variables.ulm_card_bb_media_player_with_controls_source_entity ]]]"
+                  option: "Apple TV"
+              icon: "fapro:apple-tv-clean"
+
+
+          # item3:
+          #   card:
+          #     type: "custom:button-card"
+          #     template: "widget_icon"
+          #     entity: "media_player.home_hifi"
+          #     tap_action:
+          #       action: "call-service"
+          #       service: "input_select.select_option"
+          #       service_data:
+          #         entity_id: "[[[ return variables.ulm_card_bb_media_player_with_controls_source_entity ]]]"
+          #         option: "Apple TV"
+          #     icon: "fapro:apple-tv-clean"
+          #     card_mod:
+          #       style: |
+          #         ha-card {
+          #           background:
+          #             {% if states.ulm_card_bb_media_player_with_controls_source_sensor_entity.state == 'Apple TV' %}
+          #               teal
+          #             {% else %}
+          #               purple
+          #             {% endif %}
+          #             ;
+          #         }
+
+    item3:
+      card:
+        type: "custom:my-slider"
+        entity: "[[[return variables.ulm_card_bb_media_player_with_controls_entity ]]]"
+        radius: "14px"
+        title: "Volume"
+        height: "42px"
+        mainSliderColor: |
+          [[[
+            return variables.ulm_card_media_player_enable_art && states[entity.entity_id].attributes.entity_picture != null
+            ? 'rgba(0, 0, 0, 0.2)'
+            : 'rgba(var(--color-blue),1)'
+          ]]]
+        secondarySliderColor: |
+          [[[
+            return variables.ulm_card_media_player_enable_art && states[entity.entity_id].attributes.entity_picture != null
+            ? 'rgba(0, 0, 0, 0.1)'
+            : 'rgba(var(--color-blue),0.2)'
+          ]]]
+        mainSliderColorOff: "rgba(var(--color-theme),0.05)"
+        SecondarySliderColorOff: "rgba(var(--color-theme),0.05)"
+        thumbHorizontalPadding: "0px"
+        thumbVerticalPadding: "0px"
+        thumbWidth: "0px"
+        card_mod:
+        style: |
+          ha-card {
+            border-radius: 14px;
+            background-color: transparent;
+            box-shadow: none;
+          }
+
+custom:
+  color-card:
+    style: |
+      ha-card {
+        background:
+          {% if states.sensor.bedroom_avr_source.state == 'Apple TV' %}
+            teal
+          {% else %}
+            purple
+          {% endif %}
+          ;
+      }
+
+
+blue_not_unavailable:
+  state:
+    - styles:
+        icon:
+          - color: "rgba(var(--color-blue),1)"
+        img_cell:
+          - background-color: "rgba(var(--color-blue), 0.2)"
+      value: "unavailable"
+      operator: "!="
